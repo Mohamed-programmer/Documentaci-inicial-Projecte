@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task Flow — Definició i planificació del projecte</title>
+<meta name="description" content="Definició i planificació del projecte tecnològic Task Flow (SMX, Institut Thos i Codina).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6fb;
+    --paper: #ffffff;
+    --ink: #14203a;
+    --muted: #54607a;
+    --line: #d9dfec;
+    --company: #2548d9;
+    --company-soft: #e6ebff;
+    --user: #0c7c63;
+    --user-soft: #dff3ee;
+    --amber: #f2b134;
+    --amber-soft: #fff1cf;
+    --head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1424;
+      --paper: #151c30;
+      --ink: #e8ecf7;
+      --muted: #a2adc7;
+      --line: #28324d;
+      --company: #8ea4ff;
+      --company-soft: #1d2753;
+      --user: #5fd1b1;
+      --user-soft: #0f2f2a;
+      --amber: #f2b134;
+      --amber-soft: #3a2f12;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--company); }
+  :focus-visible { outline: 3px solid var(--company); outline-offset: 3px; border-radius: 4px; }
+
+  /* ---------- Estructura ---------- */
+  .layout {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    column-gap: 56px;
+  }
+  .toc {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+    padding-top: 72px;
+  }
+  .toc-title {
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin: 0 0 16px;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+  .toc a {
+    display: block;
+    padding: 7px 0 7px 16px;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+  .toc a:hover { color: var(--ink); }
+  .toc a.active { color: var(--company); border-left-color: var(--company); font-weight: 600; }
+
+  main { min-width: 0; }
+
+  /* ---------- Capçalera ---------- */
+  .hero { padding: 72px 0 40px; }
+  .hero .kicker { margin: 0 0 12px; color: var(--muted); font-weight: 500; font-size: 0.98rem; }
+  .hero h1 {
+    font-family: var(--head);
+    font-weight: 800;
+    font-size: clamp(3rem, 9vw, 5.6rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin: 0 0 20px;
+  }
+  .hero h1 .flow-mark {
+    display: inline-block;
+    width: 0.62em;
+    height: 0.62em;
+    margin-left: 0.12em;
+    vertical-align: baseline;
+    border-radius: 50%;
+    background: linear-gradient(90deg, var(--company) 50%, var(--user) 50%);
+  }
+  .hero .lead { max-width: 34em; font-size: 1.2rem; color: var(--muted); margin: 0 0 28px; }
+  .school { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0; padding: 0; list-style: none; font-size: 0.95rem; color: var(--muted); }
+  .school strong { color: var(--ink); font-weight: 600; }
+
+  /* ---------- Seccions ---------- */
+  section { padding: 56px 0 8px; border-top: 1px solid var(--line); }
+  section:first-of-type { border-top: 0; }
+  h2 {
+    font-family: var(--head);
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+  h3 {
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin: 40px 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .goal { color: var(--muted); font-style: italic; margin: 0 0 8px; max-width: 40em; }
+  p { margin: 0 0 1em; max-width: 42em; }
+
+  .sec-num {
+    display: inline-block;
+    min-width: 1.9em;
+    margin-right: 0.15em;
+    color: var(--company);
+  }
+
+  /* ---------- Fitxa d'informació ---------- */
+  .facts { margin: 24px 0 0; border-top: 2px solid var(--ink); }
+  .facts div {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .facts dt { font-weight: 600; color: var(--muted); }
+  .facts dd { margin: 0; }
+
+  .pitch {
+    margin: 12px 0 0;
+    padding: 4px 0 4px 24px;
+    border-left: 4px solid var(--company);
+  }
+  .pitch p { font-size: 1.12rem; }
+
+  /* ---------- Preguntes i respostes ---------- */
+  .qa { margin: 0; }
+  .qa dt { font-weight: 600; margin-top: 28px; font-size: 1.05rem; }
+  .qa dd { margin: 6px 0 0; padding-left: 18px; border-left: 3px solid var(--line); max-width: 42em; }
+
+  .challenge {
+    margin: 12px 0 0;
+    padding: 24px 28px;
+    background: var(--company-soft);
+    border-radius: 14px;
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    max-width: 30em;
+  }
+
+  /* ---------- Circuit dels dos carrils ---------- */
+  .lanes, .flow { column-gap: 48px; }
+  .lanes { display: grid; grid-template-columns: 1fr 1fr; margin-top: 20px; }
+  .lane-head {
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .lane-head.company { background: var(--company-soft); color: var(--company); }
+  .lane-head.user { background: var(--user-soft); color: var(--user); justify-self: start; }
+
+  .flow {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 14px;
+    position: relative;
+  }
+  .flow::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 2px;
+    margin-left: -1px;
+    background: var(--line);
+  }
+  .step {
+    --accent: var(--company);
+    --soft: var(--company-soft);
+    grid-row: var(--r);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+  .step.company { grid-column: 1; }
+  .step.user { grid-column: 2; --accent: var(--user); --soft: var(--user-soft); }
+  .step.both { grid-column: 1 / -1; --accent: var(--ink); --soft: var(--amber-soft); justify-content: center; text-align: center; }
+  .step .n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: var(--head);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .step .txt { line-height: 1.4; }
+  .step .who {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .step.both { background: var(--amber-soft); border-color: var(--amber); }
+  .step.company::after, .step.user::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%, -50%);
+  }
+  .step.company::after { right: -24px; transform: translate(50%, -50%); }
+  .step.user::after { left: -24px; }
+
+  /* ---------- Taules ---------- */
+  .table-wrap { overflow-x: auto; margin: 12px 0 0; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
+  th, td { text-align: left; padding: 13px 16px; vertical-align: top; border-bottom: 1px solid var(--line); }
+  th { font-family: var(--head); font-weight: 700; font-size: 0.98rem; background: var(--bg); white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td.id { font-family: var(--head); font-weight: 700; white-space: nowrap; }
+  td.center, th.center { text-align: center; }
+  .yes { font-weight: 600; color: var(--user); }
+  .no { font-weight: 600; color: var(--muted); }
+
+  .chip {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1.5px solid transparent;
+  }
+  .chip.must { background: var(--company); color: var(--paper); }
+  .chip.important { background: var(--amber-soft); border-color: var(--amber); color: var(--ink); }
+  .chip.optional { border-color: var(--muted); color: var(--muted); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 12px 0 0; padding: 0; list-style: none; font-size: 0.92rem; color: var(--muted); }
+  .legend li { display: flex; align-items: center; gap: 8px; }
+
+  /* ---------- Fitxes de funcionalitat ---------- */
+  .spec {
+    margin: 20px 0 0;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .spec-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px;
+    background: var(--company-soft);
+  }
+  .spec-head .id {
+    font-family: var(--head);
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 2px 12px;
+    border-radius: 8px;
+    background: var(--company);
+    color: var(--paper);
+  }
+  .spec-head h4 { margin: 0; font-family: var(--head); font-size: 1.2rem; }
+  .spec dl { margin: 0; padding: 6px 22px 10px; }
+  .spec dl div { display: grid; grid-template-columns: 15rem 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .spec dl div:last-child { border-bottom: 0; }
+  .spec dt { font-weight: 600; color: var(--muted); }
+  .spec dd { margin: 0; }
+
+  /* ---------- Llistes ---------- */
+  .plain-list { margin: 8px 0 0; padding-left: 1.2em; }
+  .plain-list li { margin-bottom: 6px; }
+
+  /* ---------- Circuit MVP ---------- */
+  .path { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 0; }
+  .path li {
+    padding: 10px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .path li:last-child { background: var(--user-soft); border-color: var(--user); }
+  .path li + li::before {
+    content: "→";
+    display: inline-block;
+    margin: 0 12px 0 -4px;
+    color: var(--muted);
+  }
+  .path li + li { position: relative; }
+
+  footer { margin-top: 72px; padding-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+
+  /* ---------- Adaptació a mòbil ---------- */
+  @media (max-width: 900px) {
+    .layout { display: block; padding: 0 18px 72px; }
+    .toc {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      margin: 0 -18px;
+      padding: 0 18px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    .toc-title { display: none; }
+    .toc ol { display: flex; overflow-x: auto; border-left: 0; gap: 4px; }
+    .toc a { white-space: nowrap; padding: 14px 12px; margin: 0; border-left: 0; border-bottom: 2px solid transparent; }
+    .toc a.active { border-left-color: transparent; border-bottom-color: var(--company); }
+    .hero { padding-top: 40px; }
+    html { scroll-padding-top: 64px; }
+  }
+  @media (max-width: 720px) {
+    .facts div, .spec dl div { grid-template-columns: 1fr; gap: 2px; }
+    .lanes { display: none; }
+    .flow { display: flex; flex-direction: column; row-gap: 10px; }
+    .flow::before, .step.company::after, .step.user::after { display: none; }
+    .step { border-left: 5px solid var(--accent); }
+    .step .who {
+      position: static; width: auto; height: auto; overflow: visible; clip: auto;
+      display: block; font-size: 0.82rem; font-weight: 600; color: var(--accent);
+    }
+    .step .body { display: flex; flex-direction: column; }
+    .step.both { justify-content: flex-start; text-align: left; }
+    .path li + li::before { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <nav class="toc" aria-label="Índex del document">
+    <p class="toc-title">Task Flow</p>
+    <ol>
+      <li><a href="#informacio">1. Informació bàsica</a></li>
+      <li><a href="#problema">2. Definició del problema</a></li>
+      <li><a href="#proposta">3. La nostra proposta</a></li>
+      <li><a href="#objectius">4. Objectius</a></li>
+      <li><a href="#usuaris">5. Usuaris i rols</a></li>
+      <li><a href="#funcionalitats">6. Funcionalitats i requisits</a></li>
+      <li><a href="#mvp">7. Producte mínim viable</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="kicker">Plantilla de definició i planificació d'un projecte tecnològic</p>
+      <h1>Task Flow<span class="flow-mark" aria-hidden="true"></span></h1>
+      <p class="lead">Un lloc web per publicar feines curtes i trobar professionals sense haver d'investigar.</p>
+      <ul class="school">
+        <li><strong>Cicle formatiu:</strong> Sistemes Microinformàtics i Xarxes (SMX)</li>
+        <li><strong>Mòdul:</strong> Projecte intermodular</li>
+        <li><strong>Centre:</strong> Institut Thos i Codina</li>
+        <li><strong>Versió:</strong> 1.0</li>
+      </ul>
+    </header>
+
+    <!-- 1 -->
+    <section id="informacio">
+      <h2><span class="sec-num">1.</span>Informació bàsica del projecte</h2>
+      <p class="goal">Objectiu: identificar el projecte, l'equip i les condicions generals de treball.</p>
+
+      <dl class="facts">
+        <div><dt>Nom del projecte</dt><dd>Task Flow</dd></div>
+        <div><dt>Nom de l'equip</dt><dd>Task Flow</dd></div>
+        <div><dt>Integrants</dt><dd>Anass El Mouden, Mohamed Jaddi</dd></div>
+        <div><dt>Professorat</dt><dd>Nico, Fina, Assumpte, Jordi</dd></div>
+        <div><dt>Data d'inici</dt><dd>1/10/26</dd></div>
+        <div><dt>Data de lliurament</dt><dd>30/11/26</dd></div>
+        <div><dt>Durada prevista</dt><dd>96 hores</dd></div>
+        <div><dt>Tipus de projecte</dt><dd>Web</dd></div>
+        <div><dt>Destinataris</dt><dd>Empreses i «freelance»</dd></div>
+        <div><dt>Versió del document</dt><dd>1.0</dd></div>
+      </dl>
+
+      <h3>1.1. Presentació breu</h3>
+      <div class="pitch">
+        <p>Task Flow és un lloc web on qualsevol tipus d'empresa i de persona pot publicar una oferta de treball que sigui curta, és a dir, per exemple, si tinc una cafeteria i no tinc un logo, podria publicar una oferta al lloc web on algú l'accepta; la web em permet parlar amb ell fins a arribar al que vull i després pagaria el servei.</p>
+        <p>El lloc web està pensat per facilitar la trobada de professionals sense haver d'investigar, i tothom pot acceptar les ofertes, no importa la teva experiència; això facilita trobar treballs com a «freelance».</p>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="problema">
+      <h2><span class="sec-num">2.</span>Definició del problema</h2>
+      <p class="goal">Objectiu: comprendre la necessitat abans de pensar en la tecnologia.</p>
+
+      <h3>2.1. Quin problema volem resoldre?</h3>
+      <dl class="qa">
+        <dt>A. Què està passant actualment?</dt>
+        <dd>Les persones necessiten un servei. En lloc de buscar persones i pressupostos, el nostre lloc web et permet publicar el que vols i posar el pressupost que tens per a aquesta feina.</dd>
+
+        <dt>B. A qui afecta aquest problema?</dt>
+        <dd>A les petites empreses i a les persones que treballen per compte propi.</dd>
+
+        <dt>C. Per què és important solucionar-lo?</dt>
+        <dd>Per crear oportunitats de treball per a tot tipus de persones.</dd>
+
+        <dt>D. Com es resol actualment?</dt>
+        <dd>Investigant en el sector fins que es troba algú que ho faci de la manera que vols i amb el pressupost que tens pensat. Això ho fan en llocs web com «Fiverr», on tu publiques el teu perfil i et trien.</dd>
+      </dl>
+
+      <h3>2.2. Formular el repte</h3>
+      <p class="challenge">Com podríem ajudar petites empreses a trobar gent per a treballs ràpids mitjançant un lloc web?</p>
+
+      <h3>2.3. Com sabem que aquest problema existeix?</h3>
+      <p><strong>Evidències o informació recollida:</strong></p>
+      <p>Hem pogut detectar aquesta situació perquè hem investigat la situació a internet. A més, coneixem gent que treballa per compte propi i hi ha moments en què no tenen la possibilitat de treballar.</p>
+    </section>
+
+    <!-- 3 -->
+    <section id="proposta">
+      <h2><span class="sec-num">3.</span>La nostra proposta de solució</h2>
+      <p class="goal">Objectiu: explicar què construirem i quin valor aportarà.</p>
+
+      <h3>3.1. Què proposem crear?</h3>
+      <p>Un lloc web que permeti connectar persones treballadores i empreses que necessitin treballadors. També els proposarem una sèrie d'eines perquè puguin treballar conjuntament.</p>
+
+      <h3>3.2. Com funcionarà?</h3>
+      <div class="lanes" aria-hidden="true">
+        <div class="lane-head company">Empresa</div>
+        <div class="lane-head user">Usuari</div>
+      </div>
+      <ol class="flow">
+        <li class="step company" style="--r:1"><span class="n">1</span><span class="body"><span class="who">Empresa</span><span class="txt">L'empresa entra al lloc web</span></span></li>
+        <li class="step company" style="--r:2"><span class="n">2</span><span class="body"><span class="who">Empresa</span><span class="txt">Publica una oferta</span></span></li>
+        <li class="step user" style="--r:3"><span class="n">3</span><span class="body"><span class="who">Usuari</span><span class="txt">L'usuari entra al lloc web</span></span></li>
+        <li class="step user" style="--r:4"><span class="n">4</span><span class="body"><span class="who">Usuari</span><span class="txt">Busca ofertes</span></span></li>
+        <li class="step user" style="--r:5"><span class="n">5</span><span class="body"><span class="who">Usuari</span><span class="txt">Es presenta a les ofertes que vol</span></span></li>
+        <li class="step company" style="--r:6"><span class="n">6</span><span class="body"><span class="who">Empresa</span><span class="txt">A l'empresa li arriben els candidats</span></span></li>
+        <li class="step company" style="--r:7"><span class="n">7</span><span class="body"><span class="who">Empresa</span><span class="txt">Accepta el candidat que més li agrada</span></span></li>
+        <li class="step both" style="--r:8"><span class="n">8</span><span class="body"><span class="who">Empresa i usuari</span><span class="txt">L'empresa i l'usuari parlen</span></span></li>
+        <li class="step user" style="--r:9"><span class="n">9</span><span class="body"><span class="who">Usuari</span><span class="txt">L'usuari entrega el producte finalitzat</span></span></li>
+        <li class="step company" style="--r:10"><span class="n">10</span><span class="body"><span class="who">Empresa</span><span class="txt">L'empresa paga</span></span></li>
+        <li class="step user" style="--r:11"><span class="n">11</span><span class="body"><span class="who">Usuari</span><span class="txt">L'usuari rep el pagament</span></span></li>
+      </ol>
+
+      <h3>3.3. Què fa diferent o útil la nostra proposta?</h3>
+      <p>Simplifiquem el procés de buscar treballadors reunint-ho tot en un sol lloc.</p>
+
+      <h3>3.4. Què no farà el nostre projecte?</h3>
+      <p><strong>Queda fora del nostre projecte:</strong></p>
+      <p>La primera versió permet crear ofertes, acceptar candidats, té un xat i, a més, permet enviar arxius de manera limitada; no inclou els pagaments, ni l'assistent ni el filtre d'IA.</p>
+    </section>
+
+    <!-- 4 -->
+    <section id="objectius">
+      <h2><span class="sec-num">4.</span>Objectius del projecte</h2>
+      <p class="goal">Objectiu: establir què volem aconseguir i com comprovarem que ho hem aconseguit.</p>
+
+      <h3>4.1. Objectiu general</h3>
+      <p>Desenvolupar un lloc web que permeti connectar empreses i treballadors que ho necessitin.</p>
+
+      <h3>4.2. Objectius específics</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Núm.</th><th>Objectiu específic</th><th>Com comprovarem que funciona?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="id">1</td><td>Crear ofertes</td><td>Creem una oferta des d'un compte i amb un altre la veiem.</td></tr>
+            <tr><td class="id">2</td><td>Candidats</td><td>Acceptem una oferta i a l'altre li surt la llista de candidats i accepta el que vol.</td></tr>
+            <tr><td class="id">3</td><td>Xat</td><td>Xatejar entre clients i empresa.</td></tr>
+            <tr><td class="id">4</td><td>Entrega d'arxius</td><td>Entregar un arxiu i que es quedi a la base de dades durant un temps concret; amb un altre usuari el descarreguem.</td></tr>
+            <tr><td class="id">5</td><td>Pagaments</td><td>El servei per fer pagaments ens dona una llista de comptes i targetes falses per fer proves; amb aquesta llista faria les proves per comprovar-ne el funcionament.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="usuaris">
+      <h2><span class="sec-num">5.</span>Usuaris i rols</h2>
+      <p class="goal">Objectiu: identificar qui utilitzarà la solució i què podrà fer.</p>
+
+      <h3>5.1. Identificació dels usuaris</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tipus d'usuari</th><th>Qui és?</th><th>Què necessita fer?</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Usuari 1</td><td>Qui crea l'oferta</td><td>Crea una oferta dient quant paga, què vol i una descripció.</td></tr>
+            <tr><td>Usuari 2</td><td>Candidat</td><td>Accepta l'oferta, espera que l'acceptin i, una vegada fet això, completa la feina i l'entrega.</td></tr>
+            <tr><td>Administrador, si cal</td><td>Moderador</td><td>Modera la conversa i els usuaris en cas de denúncia.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.2. Permisos i accions</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Acció</th><th class="center">Usuari 1</th><th class="center">Usuari 2</th><th class="center">Administrador</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Consultar informació</td><td class="center yes">Sí</td><td class="center yes">Sí</td><td class="center yes">Sí</td></tr>
+            <tr><td>Introduir informació</td><td class="center yes">Sí</td><td class="center yes">Sí (només la seva)</td><td class="center yes">Sí</td></tr>
+            <tr><td>Modificar informació</td><td class="center yes">Sí</td><td class="center no">No</td><td class="center yes">Sí</td></tr>
+            <tr><td>Eliminar informació</td><td class="center no">No</td><td class="center no">No</td><td class="center yes">Sí</td></tr>
+            <tr><td>Denunciar usuaris i xats</td><td class="center yes">Sí</td><td class="center yes">Sí</td><td class="center yes">Sí</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <dl class="qa">
+        <dt>Pregunta important: realment necessitem que els usuaris es registrin o iniciïn sessió?</dt>
+        <dd>Sí, és important que els usuaris iniciïn sessió, ja que d'aquesta manera es podran distingir les diferents empreses i usuaris, i també es permetrà administrar millor els arxius que tinguin compartits entre ells.</dd>
+      </dl>
+    </section>
+
+    <!-- 6 -->
+    <section id="funcionalitats">
+      <h2><span class="sec-num">6.</span>Funcionalitats i requisits</h2>
+      <p class="goal">Objectiu: concretar què ha de fer el sistema.</p>
+
+      <h3>6.1. Llista de funcionalitats</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Funcionalitat</th><th>Descripció</th><th>Prioritat</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="id">F01</td><td>Publicar ofertes</td><td>Permet que les empreses indiquin quines necessitats tenen.</td><td><span class="chip must">Imprescindible</span></td></tr>
+            <tr><td class="id">F02</td><td>Presentar-se a ofertes</td><td>Permet que les persones indiquin quines necessitats poden cobrir.</td><td><span class="chip must">Imprescindible</span></td></tr>
+            <tr><td class="id">F03</td><td>Filtre per IA</td><td>Una IA analitza les ofertes i et dona les que millor encaixen amb tu.</td><td><span class="chip optional">Opcional</span></td></tr>
+            <tr><td class="id">F04</td><td>Puntuació</td><td>Permet que les persones i les empreses es puntuïn en funció de l'experiència que han tingut entre elles.</td><td><span class="chip important">Important</span></td></tr>
+            <tr><td class="id">F05</td><td>Pagament</td><td>Permet que les empreses paguin el servei.</td><td><span class="chip important">Important</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul class="legend">
+        <li><span class="chip must">Imprescindible</span> sense aquesta funcionalitat, el projecte no compleix la seva finalitat</li>
+        <li><span class="chip important">Important</span> millora el projecte, però es pot incorporar després</li>
+        <li><span class="chip optional">Opcional</span> només es farà si queda temps</li>
+      </ul>
+
+      <h3>6.2. Fitxa detallada d'una funcionalitat</h3>
+
+      <article class="spec">
+        <div class="spec-head"><span class="id">F01</span><h4>Publicar ofertes</h4></div>
+        <dl>
+          <div><dt>Qui la utilitza?</dt><dd>Empresa</dd></div>
+          <div><dt>Què vol aconseguir?</dt><dd>Crear ofertes de treball.</dd></div>
+          <div><dt>Quines dades necessita?</dt><dd>Un títol, una descripció i una data.</dd></div>
+          <div><dt>Què ha de fer el sistema?</dt><dd>Crea un nou registre a la base de dades on tothom veu l'oferta i pot cercar per cada paràmetre (categoria, cercador...).</dd></div>
+          <div><dt>Quin resultat ha de mostrar?</dt><dd>Un quadre amb tota la informació introduïda.</dd></div>
+          <div><dt>Què passa si hi ha un error?</dt><dd>No et deixa publicar-la.</dd></div>
+          <div><dt>Com comprovarem que funciona?</dt><dd>Es mostra un quadret amb la informació de l'oferta.</dd></div>
+        </dl>
+      </article>
+
+      <article class="spec">
+        <div class="spec-head"><span class="id">F02</span><h4>Presentar-se a ofertes</h4></div>
+        <dl>
+          <div><dt>Qui la utilitza?</dt><dd>Treballador</dd></div>
+          <div><dt>Què vol aconseguir?</dt><dd>Aplicar a una oferta.</dd></div>
+          <div><dt>Quines dades necessita?</dt><dd>Tenir un compte.</dd></div>
+          <div><dt>Què ha de fer el sistema?</dt><dd>Crea un registre amb la teva informació (nom, puntuació, descripció...).</dd></div>
+          <div><dt>Quin resultat ha de mostrar?</dt><dd>Ha de mostrar el teu perfil en la candidatura a l'empresa.</dd></div>
+          <div><dt>Què passa si hi ha un error?</dt><dd>No sortiran treballadors a l'empresa.</dd></div>
+          <div><dt>Com comprovarem que funciona?</dt><dd>Es mostra l'usuari.</dd></div>
+        </dl>
+      </article>
+
+      <h3>6.3. Requisits no funcionals</h3>
+      <p><strong>Requisits seleccionats i com els comprovarem:</strong></p>
+      <ul class="plain-list">
+        <li>Ha de tenir una interfície fàcil d'utilitzar.</li>
+        <li>Seguretat.</li>
+        <li>Notificacions.</li>
+        <li>Ha de poder utilitzar-se des de qualsevol navegador.</li>
+      </ul>
+    </section>
+
+    <!-- 7 -->
+    <section id="mvp">
+      <h2><span class="sec-num">7.</span>Definició del producte mínim viable (MVP)</h2>
+      <p class="goal">Objectiu: decidir quina és la primera versió funcional que construirem.</p>
+
+      <h3>7.1. El nostre MVP</h3>
+      <dl class="qa">
+        <dt>Quina és l'acció principal que ha de funcionar?</dt>
+        <dd>Poder crear ofertes, permetre la comunicació i la finalització de la feina.</dd>
+
+        <dt>Quines funcionalitats són imprescindibles per aconseguir-ho?</dt>
+        <dd>Els identificadors F01 i F02.</dd>
+
+        <dt>Què podrem demostrar quan estigui acabat?</dt>
+        <dd>Que permet crear una oferta i facilita la finalització de la tasca.</dd>
+      </dl>
+
+      <h3>7.2. Circuit principal</h3>
+      <p><strong>Circuit del nostre MVP:</strong></p>
+      <ol class="path">
+        <li>Usuari</li>
+        <li>Consulta ofertes</li>
+        <li>Inscripció a les ofertes</li>
+        <li>Confirmació de la candidatura</li>
+        <li>Comunicació amb l'empresa</li>
+        <li>Entrega de la feina completa</li>
+      </ol>
+
+      <h3>7.3. Tecnologies i eines utilitzades</h3>
+      <p>A continuació es detallen les eines tecnològiques utilitzades per a la implementació del prototip:</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Capes</th><th>Tecnologia / Eina</th><th>Justificació</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Interfícies</strong></td><td>HTML / CSS</td><td>Permet crear vistes per a l'usuari en diferents tipus de dispositius.</td></tr>
+            <tr><td><strong>Lògica de negoci (Programació)</strong></td><td>JavaScript</td><td>L'ús de JavaScript permet afegir funcionalitats i validació de dades directament al navegador.</td></tr>
+            <tr><td><strong>Servidor web</strong></td><td>Debian Server / Apache</td><td>S'utilitza un servidor web per allotjar i publicar el nostre prototip a la xarxa local de forma centralitzada.</td></tr>
+            <tr><td><strong>Treball col·laboratiu / Còpies de seguretat</strong></td><td>Local</td><td>S'emmagatzema de manera local per, en cas de tenir problemes, tenir la còpia de seguretat i no perdre tota la informació.</td></tr>
+            <tr><td><strong>Base de dades</strong></td><td>Supabase</td><td>Una base de dades al núvol que permet crear i verificar usuaris i ens permet crear ofertes de treball.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>Task Flow · Projecte intermodular SMX · Institut Thos i Codina · Versió 1.0</footer>
+  </main>
+</div>
+
+<script>
+  // Marca a l'índex la secció que s'està llegint
+  (function () {
+    var links = document.querySelectorAll('.toc a');
+    var sections = document.querySelectorAll('main section');
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(function (s) { io.observe(s); });
+  })();
+</script>
+</body>
+</html>
